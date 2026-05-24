@@ -58,6 +58,17 @@ Rules:
 - **Never** include credentials, OAuth tokens, webhook GUIDs, or anything else
   sensitive. The export button strips these for you.
 
+## Official vs community
+
+Every bundled template surfaces in the Rune gallery in one of two buckets:
+
+- **Official** - curated by the Rune team. Sets `"official": true`.
+- **Community** - everything else (the default). Omit the field or set it to
+  `false`.
+
+Contributor PRs should never set `"official": true`. Reviewers will reject any
+PR from outside the Rune team that flips this flag.
+
 ## Running validation locally
 
 ```bash

@@ -1,11 +1,10 @@
 {
   "external_id": "sheets-gmail-tracker",
-  "name": "sheets -> gmail tracker",
+  "name": "sheets → gmail tracker",
   "description": "A google sheets / gmail integrated attendance tracker with AI reasoning.",
   "category": "productivity",
   "icon": "sheet",
   "tags": [
-    "official",
     "gmail",
     "google-sheets",
     "google",
@@ -14,6 +13,7 @@
     "agent"
   ],
   "author": null,
+  "official": true,
   "workflow_data": {
     "nodes": [
       {

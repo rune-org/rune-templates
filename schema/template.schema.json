@@ -273,6 +273,12 @@
       "title": "Name",
       "type": "string"
     },
+    "official": {
+      "default": false,
+      "description": "Marks the template as a Rune-curated official entry. Contributor PRs leave this as false; PR review is the gate that prevents outside contributions from claiming official status.",
+      "title": "Official",
+      "type": "boolean"
+    },
     "tags": {
       "items": {
         "type": "string"
