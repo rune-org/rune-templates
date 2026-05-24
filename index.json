@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-05-24T14:41:26Z",
+  "template_count": 1,
+  "templates": [
+    {
+      "external_id": "sheets-gmail-tracker",
+      "name": "sheets -> gmail tracker",
+      "description": "A google sheets / gmail integrated attendance tracker with AI reasoning.",
+      "category": "productivity",
+      "icon": "sheet",
+      "tags": [
+        "official",
+        "gmail",
+        "google-sheets",
+        "google",
+        "datetime",
+        "ai",
+        "agent"
+      ],
+      "author": null,
+      "path": "templates/productivity/sheets-gmail-tracker.json"
+    }
+  ]
+}
