@@ -61,9 +61,9 @@ Rules:
 ## Running validation locally
 
 ```bash
-npm install
-npm run validate              # validate every template against the schema
-npm run build-index           # rebuild index.json
+pnpm install
+pnpm run validate             # validate every template against the schema
+pnpm run build-index          # rebuild index.json
 ```
 
 ## Tag suggestions

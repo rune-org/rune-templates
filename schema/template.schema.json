@@ -268,18 +268,6 @@
       "default": null,
       "title": "Icon"
     },
-    "min_rune_version": {
-      "anyOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "null"
-        }
-      ],
-      "default": null,
-      "title": "Min Rune Version"
-    },
     "name": {
       "minLength": 1,
       "title": "Name",

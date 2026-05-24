@@ -8,7 +8,7 @@
   "scripts": {
     "validate": "node scripts/validate.mjs",
     "build-index": "node scripts/build-index.mjs",
-    "check": "npm run validate && npm run build-index -- --check"
+    "check": "pnpm run validate && pnpm run build-index -- --check"
   },
   "devDependencies": {
     "ajv": "^8.17.1",

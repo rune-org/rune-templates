@@ -38,7 +38,6 @@ async function main() {
       icon: parsed.icon ?? null,
       tags: parsed.tags ?? [],
       author: parsed.author ?? null,
-      min_rune_version: parsed.min_rune_version ?? null,
       path: relative(ROOT, filePath).replaceAll("\\", "/"),
     });
   }
