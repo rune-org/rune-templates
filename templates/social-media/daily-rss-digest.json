@@ -1,0 +1,110 @@
+{
+  "external_id": "daily-rss-digest",
+  "name": "Daily RSS Digest",
+  "description": "Fetches a public RSS feed on a schedule, summarizes the latest items with AI, and emails the digest.",
+  "category": "social_media",
+  "icon": "ai",
+  "tags": [
+    "rss",
+    "http",
+    "digest",
+    "ai",
+    "email"
+  ],
+  "author": null,
+  "official": true,
+  "workflow_data": {
+    "nodes": [
+      {
+        "id": "1e49b4d9-b0c7-4505-b907-2c0000a8e50d",
+        "type": "scheduledTrigger",
+        "position": {
+          "x": 417.5931502706274,
+          "y": 52.90216764620033
+        },
+        "data": {
+          "label": "Schedule",
+          "amount": 1,
+          "unit": "days"
+        }
+      },
+      {
+        "id": "76cb341e-df85-43f6-9dfe-0b21faa679ce",
+        "type": "http",
+        "position": {
+          "x": 691.9802764356795,
+          "y": 54.11624046434659
+        },
+        "data": {
+          "label": "HTTP",
+          "method": "GET",
+          "url": "https://hnrss.org/frontpage",
+          "timeout": 30,
+          "retry": 0,
+          "retry_delay": 0,
+          "raise_on_status": "4xx,5xx"
+        }
+      },
+      {
+        "id": "d25d6db2-be8d-46a7-8301-dbb3b673653a",
+        "type": "agent",
+        "position": {
+          "x": 999.8766749397121,
+          "y": 26.191898720582863
+        },
+        "data": {
+          "label": "Agent",
+          "model": {
+            "name": "gemini-3.1-flash-lite-preview",
+            "backend": "vertex",
+            "provider": "gemini",
+            "temperature": 0.2
+          },
+          "system_prompt": "you are a helpful assistant, your job is to brief the user with the top hacker news daily.",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Craft a message based on today's rss: $HTTP.body with the hottest topics.",
+              "ui_id": "message_34e10bd4-f640-49bf-8ce4-014318dc72ca"
+            }
+          ]
+        }
+      },
+      {
+        "id": "1dc8c181-ceb2-4599-89df-bb2ffefa68e2",
+        "type": "smtp",
+        "position": {
+          "x": 1338.1116742486026,
+          "y": 11.989588163516657
+        },
+        "data": {
+          "label": "SMTP",
+          "from": "sender@mail.com",
+          "to": "recepient@mail.com",
+          "subject": "Today's hot topics from HN",
+          "body": "$Agent.final_response"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "15327b73-c4a9-4f75-a6b6-b73f883519ea",
+        "source": "1e49b4d9-b0c7-4505-b907-2c0000a8e50d",
+        "target": "76cb341e-df85-43f6-9dfe-0b21faa679ce",
+        "type": "default"
+      },
+      {
+        "id": "a4ae678c-7247-49e1-9866-45bd3cc50529",
+        "source": "76cb341e-df85-43f6-9dfe-0b21faa679ce",
+        "target": "d25d6db2-be8d-46a7-8301-dbb3b673653a",
+        "type": "default"
+      },
+      {
+        "id": "8573b1aa-6011-47d1-b12d-72ab1ddb1522",
+        "source": "d25d6db2-be8d-46a7-8301-dbb3b673653a",
+        "target": "1dc8c181-ceb2-4599-89df-bb2ffefa68e2",
+        "type": "default"
+      }
+    ]
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "external_id": "help-wanted-issue-finder",
+  "name": "Help Wanted Issue Finder",
+  "description": "Fetches open help wanted issues from rune-org/rune and logs available issues to work on.",
+  "category": "development",
+  "icon": "Code",
+  "tags": [
+    "github",
+    "issues",
+    "http",
+    "log"
+  ],
+  "author": null,
+  "official": true,
+  "workflow_data": {
+    "nodes": [
+      {
+        "id": "3de938fd-8df4-4457-a3dc-3d44314bd167",
+        "type": "trigger",
+        "position": {
+          "x": 992.0196354545453,
+          "y": -152.3569167996341
+        },
+        "data": {
+          "label": "Trigger"
+        }
+      },
+      {
+        "id": "9a06faaf-c5d4-4ba8-afab-2f85d1854a04",
+        "type": "if",
+        "position": {
+          "x": 1550.7494133763678,
+          "y": -159.20408584921034
+        },
+        "data": {
+          "label": "If",
+          "expression": "$fetch_help_wanted_issues.body.total_count > 0"
+        }
+      },
+      {
+        "id": "f74f3074-34a9-4b7d-8079-93aeeb3b95ce",
+        "type": "http",
+        "position": {
+          "x": 1247.0762379280784,
+          "y": -147.05713519948478
+        },
+        "data": {
+          "label": "fetch_help_wanted_issues",
+          "method": "GET",
+          "url": "https://api.github.com/search/issues",
+          "query": {
+            "q": "repo:rune-org/rune is:issue is:open label:\\\"help wanted\\\"",
+            "per_page": "10"
+          },
+          "timeout": 30,
+          "retry": 0,
+          "retry_delay": 0,
+          "raise_on_status": "4xx,5xx"
+        }
+      },
+      {
+        "id": "6b34ef65-0d09-43d4-a6d6-5befc76d28a1",
+        "type": "log",
+        "position": {
+          "x": 1842.2756729275695,
+          "y": -254.29175253876258
+        },
+        "data": {
+          "label": "contribute_to_rune",
+          "message": "List of issues to contribute to:\n$fetch_help_wanted_issues.body.items",
+          "level": "info"
+        }
+      },
+      {
+        "id": "d9a6de52-3386-434b-8d35-a1b57d32f4d7",
+        "type": "log",
+        "position": {
+          "x": 1842.9593755148428,
+          "y": -129.48163475195415
+        },
+        "data": {
+          "label": "all_good",
+          "message": "the rune team has it under control.",
+          "level": "info"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "d3c7ca38-3e39-482e-8a8a-6a1b9902c6f1",
+        "source": "3de938fd-8df4-4457-a3dc-3d44314bd167",
+        "target": "f74f3074-34a9-4b7d-8079-93aeeb3b95ce",
+        "type": "default"
+      },
+      {
+        "id": "8c6d3ae9-a21c-40ff-9992-ba6a67bd0e29",
+        "source": "f74f3074-34a9-4b7d-8079-93aeeb3b95ce",
+        "target": "9a06faaf-c5d4-4ba8-afab-2f85d1854a04",
+        "type": "default"
+      },
+      {
+        "id": "925d8013-0a41-4021-823e-dd7202e950a7",
+        "source": "9a06faaf-c5d4-4ba8-afab-2f85d1854a04",
+        "target": "6b34ef65-0d09-43d4-a6d6-5befc76d28a1",
+        "type": "default",
+        "label": "true",
+        "sourceHandle": "true",
+        "labelStyle": {
+          "fill": "white",
+          "fontWeight": 600
+        },
+        "labelShowBg": true,
+        "labelBgStyle": {
+          "fill": "hsl(142 70% 45%)"
+        },
+        "labelBgPadding": [
+          2,
+          6
+        ],
+        "labelBgBorderRadius": 4
+      },
+      {
+        "id": "0a4221fd-5f12-48f7-86fb-5bcdb60f84b7",
+        "source": "9a06faaf-c5d4-4ba8-afab-2f85d1854a04",
+        "target": "d9a6de52-3386-434b-8d35-a1b57d32f4d7",
+        "type": "default",
+        "label": "false",
+        "sourceHandle": "false",
+        "labelStyle": {
+          "fill": "white",
+          "fontWeight": 600
+        },
+        "labelShowBg": true,
+        "labelBgStyle": {
+          "fill": "hsl(0 70% 50%)"
+        },
+        "labelBgPadding": [
+          2,
+          6
+        ],
+        "labelBgBorderRadius": 4
+      }
+    ]
+  }
+}

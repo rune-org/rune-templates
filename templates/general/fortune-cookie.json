@@ -1,0 +1,75 @@
+{
+  "external_id": "fortune-cookie",
+  "name": "Fortune Cookie",
+  "description": "The rune onboarding example: what does your fortune cookie say? Run this workflow and find out!",
+  "category": "general",
+  "icon": "http",
+  "tags": [
+    "api",
+    "fun",
+    "fortune-cookie",
+    "log",
+    "http"
+  ],
+  "author": null,
+  "official": true,
+  "workflow_data": {
+    "nodes": [
+      {
+        "id": "25d9b8ff-fe90-40ad-bb7f-f71a96a88764",
+        "type": "trigger",
+        "position": {
+          "x": 98.18692902319037,
+          "y": 51.858046380885455
+        },
+        "data": {
+          "label": "Trigger"
+        }
+      },
+      {
+        "id": "5fa65665-763b-4cf7-9e94-b0da280c6792",
+        "type": "http",
+        "position": {
+          "x": 378.1869290231904,
+          "y": 35.858046380885455
+        },
+        "data": {
+          "label": "fortune_cookie",
+          "method": "GET",
+          "url": "https://api.github.com/zen",
+          "timeout": 30,
+          "retry": 0,
+          "retry_delay": 0,
+          "raise_on_status": "4xx,5xx"
+        }
+      },
+      {
+        "id": "3d234f4a-ddd7-4d8f-aae5-97e6413f8f82",
+        "type": "log",
+        "position": {
+          "x": 718.1869290231904,
+          "y": 39.858046380885455
+        },
+        "data": {
+          "label": "Log",
+          "message": "Your fortune cookie says: $fortune_cookie.body",
+          "level": "info"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "9cb2c18a-9b3b-4c3e-bd94-37dfac249317",
+        "source": "25d9b8ff-fe90-40ad-bb7f-f71a96a88764",
+        "target": "5fa65665-763b-4cf7-9e94-b0da280c6792",
+        "type": "default"
+      },
+      {
+        "id": "a85e3af0-b8aa-4a56-9bc6-741b7ecffe56",
+        "source": "5fa65665-763b-4cf7-9e94-b0da280c6792",
+        "target": "3d234f4a-ddd7-4d8f-aae5-97e6413f8f82",
+        "type": "default"
+      }
+    ]
+  }
+}

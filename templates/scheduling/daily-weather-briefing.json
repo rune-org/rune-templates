@@ -1,0 +1,110 @@
+{
+  "external_id": "daily-weather-briefing",
+  "name": "Daily Weather Briefing",
+  "description": "Fetches today’s weather for London on a schedule and sends a customized email message.",
+  "category": "scheduling",
+  "icon": "inbox",
+  "tags": [
+    "weather",
+    "http",
+    "schedule",
+    "daily",
+    "briefing"
+  ],
+  "author": null,
+  "official": true,
+  "workflow_data": {
+    "nodes": [
+      {
+        "id": "a8871734-d064-4c77-b430-2a94bbab8b9a",
+        "type": "scheduledTrigger",
+        "position": {
+          "x": 899.6083887785129,
+          "y": -130.87738061511243
+        },
+        "data": {
+          "label": "Schedule",
+          "amount": 1,
+          "unit": "days"
+        }
+      },
+      {
+        "id": "05174998-9a87-4045-b5b2-086f14a2c630",
+        "type": "http",
+        "position": {
+          "x": 1180.8341631926326,
+          "y": -137.90236675818483
+        },
+        "data": {
+          "label": "weather_in_london",
+          "method": "GET",
+          "url": "https://wttr.in/London?format=j1",
+          "timeout": 30,
+          "retry": 0,
+          "retry_delay": 0,
+          "raise_on_status": "4xx,5xx"
+        }
+      },
+      {
+        "id": "266e636d-b661-4696-bf25-3b78dd2b193e",
+        "type": "agent",
+        "position": {
+          "x": 1513.5009491083702,
+          "y": -166.9087049377918
+        },
+        "data": {
+          "label": "Agent",
+          "model": {
+            "name": "gemini-3.1-flash-lite-preview",
+            "backend": "vertex",
+            "provider": "gemini",
+            "temperature": 0.2
+          },
+          "system_prompt": "You are a helpful weather assistant. Based on the day's weather recommend in few words what the user should wear throughout the day and/or any needed precautions they should take.",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Based on today's weather: $weather_in_london.body.current_condition[0].FeelsLikeC in celsius. Craft an email to the user.",
+              "ui_id": "message_b3e55799-d8c5-4162-99eb-fe06ff500f71"
+            }
+          ]
+        }
+      },
+      {
+        "id": "8b5591bc-068d-4739-99cd-fb2364a41215",
+        "type": "smtp",
+        "position": {
+          "x": 1846.3942919319977,
+          "y": -176.65305862554314
+        },
+        "data": {
+          "label": "SMTP",
+          "from": "sender@mail.com",
+          "to": "recipient@mail.com",
+          "subject": "Today's weather briefing",
+          "body": "$Agent.messages[0].content"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "222bfd00-50c8-43fd-b5ee-a071065f7768",
+        "source": "a8871734-d064-4c77-b430-2a94bbab8b9a",
+        "target": "05174998-9a87-4045-b5b2-086f14a2c630",
+        "type": "default"
+      },
+      {
+        "id": "6dea23e1-f398-4303-a923-3e6ec39d727e",
+        "source": "05174998-9a87-4045-b5b2-086f14a2c630",
+        "target": "266e636d-b661-4696-bf25-3b78dd2b193e",
+        "type": "default"
+      },
+      {
+        "id": "7bfa42ed-7bc5-4693-b2fa-a00c38edc741",
+        "source": "266e636d-b661-4696-bf25-3b78dd2b193e",
+        "target": "8b5591bc-068d-4739-99cd-fb2364a41215",
+        "type": "default"
+      }
+    ]
+  }
+}

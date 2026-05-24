@@ -1,0 +1,130 @@
+{
+  "external_id": "github-status",
+  "name": "GitHub Status",
+  "description": "GitHub down? Don't check. Automate this workflow and let server downtime be your signal to take a break.",
+  "category": "email",
+  "icon": "Mail",
+  "tags": [
+    "api",
+    "email",
+    "github"
+  ],
+  "author": null,
+  "official": true,
+  "workflow_data": {
+    "nodes": [
+      {
+        "id": "5fa65665-763b-4cf7-9e94-b0da280c6792",
+        "type": "http",
+        "position": {
+          "x": 378.1869290231904,
+          "y": 35.858046380885455
+        },
+        "data": {
+          "label": "github_status",
+          "method": "GET",
+          "url": "https://github.com",
+          "timeout": 30,
+          "retry": 0,
+          "retry_delay": 0,
+          "raise_on_status": "4xx,5xx"
+        }
+      },
+      {
+        "id": "f1a13a01-593d-4955-8f9e-116ddeb87c85",
+        "position": {
+          "x": 687.9493060232205,
+          "y": 29.36188467711449
+        },
+        "type": "if",
+        "data": {
+          "label": "If",
+          "expression": "$github_status.status != 200"
+        }
+      },
+      {
+        "id": "47f10cad-8b3f-4b2a-9bc7-d08198859b4e",
+        "position": {
+          "x": 1009.58484542239,
+          "y": -105.61017203503712
+        },
+        "type": "smtp",
+        "data": {
+          "label": "SMTP",
+          "subject": "Github is down!",
+          "body": "Take a break, github is down right now!",
+          "from": "sender@mail.com",
+          "to": "recepient@mail.com"
+        }
+      },
+      {
+        "id": "55c99b76-c3b5-43d5-bf31-7fa0fd62894c",
+        "position": {
+          "x": 98.2841738284036,
+          "y": 27.064487967120385
+        },
+        "type": "scheduledTrigger",
+        "data": {
+          "label": "Schedule",
+          "amount": 1,
+          "unit": "hours"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "type": "default",
+        "source": "5fa65665-763b-4cf7-9e94-b0da280c6792",
+        "target": "f1a13a01-593d-4955-8f9e-116ddeb87c85",
+        "id": "5d10aaf8-fae9-4207-b9ce-1c266457ea52",
+        "labelStyle": {
+          "fill": "white",
+          "fontWeight": 600
+        },
+        "labelShowBg": false,
+        "labelBgPadding": [
+          2,
+          6
+        ],
+        "labelBgBorderRadius": 4
+      },
+      {
+        "type": "default",
+        "source": "f1a13a01-593d-4955-8f9e-116ddeb87c85",
+        "sourceHandle": "true",
+        "target": "47f10cad-8b3f-4b2a-9bc7-d08198859b4e",
+        "id": "f7c40327-d4f0-4a97-a679-ca61521e50d2",
+        "label": "true",
+        "labelStyle": {
+          "fill": "white",
+          "fontWeight": 600
+        },
+        "labelShowBg": true,
+        "labelBgStyle": {
+          "fill": "hsl(142 70% 45%)"
+        },
+        "labelBgPadding": [
+          2,
+          6
+        ],
+        "labelBgBorderRadius": 4
+      },
+      {
+        "type": "default",
+        "source": "55c99b76-c3b5-43d5-bf31-7fa0fd62894c",
+        "target": "5fa65665-763b-4cf7-9e94-b0da280c6792",
+        "id": "0cafd7aa-b9fd-4bfb-bcf0-ec5247bd1e8f",
+        "labelStyle": {
+          "fill": "white",
+          "fontWeight": 600
+        },
+        "labelShowBg": false,
+        "labelBgPadding": [
+          2,
+          6
+        ],
+        "labelBgBorderRadius": 4
+      }
+    ]
+  }
+}

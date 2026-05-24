@@ -1,0 +1,143 @@
+{
+  "external_id": "uptime-threshold-check",
+  "name": "Uptime Threshold Check",
+  "description": "Fetches a public uptime metric and logs whether it meets the target availability threshold.",
+  "category": "analytics",
+  "icon": "BarChart3",
+  "tags": [
+    "analytics",
+    "http",
+    "uptime",
+    "log",
+    "condition",
+    "threshold"
+  ],
+  "author": null,
+  "official": true,
+  "workflow_data": {
+    "nodes": [
+      {
+        "id": "cb6fcee6-005e-4e8e-a0af-83f5e5382c21",
+        "type": "trigger",
+        "position": {
+          "x": 663.4784349284271,
+          "y": -85.66428922124813
+        },
+        "data": {
+          "label": "Trigger"
+        }
+      },
+      {
+        "id": "335002ee-430e-408f-85f5-8f47c84ea9aa",
+        "type": "http",
+        "position": {
+          "x": 895.1863315902581,
+          "y": -99.89275648113122
+        },
+        "data": {
+          "label": "fetch_uptime",
+          "method": "GET",
+          "url": "https://api.siteinformant.com/api/public/example",
+          "timeout": 30,
+          "retry": 0,
+          "retry_delay": 0,
+          "raise_on_status": "4xx,5xx"
+        }
+      },
+      {
+        "id": "79c4395e-3c95-41cb-bef4-4b3835d5d780",
+        "type": "if",
+        "position": {
+          "x": 1204.5339283948574,
+          "y": -95.41865282793685
+        },
+        "data": {
+          "label": "If",
+          "expression": "$fetch_uptime.body.uptimePercent >= 99.999"
+        }
+      },
+      {
+        "id": "db3322e3-2b00-4f37-910a-cc6a68198cdc",
+        "type": "log",
+        "position": {
+          "x": 1485.351525045202,
+          "y": -218.42064996412122
+        },
+        "data": {
+          "label": "five_9s",
+          "message": "5 9's achieved",
+          "level": "info"
+        }
+      },
+      {
+        "id": "4e8e0379-a69e-462c-a1df-fcc00ac4071d",
+        "type": "log",
+        "position": {
+          "x": 1499.2648291390854,
+          "y": -38.20694563242083
+        },
+        "data": {
+          "label": "not_five_9s",
+          "message": "5 9's not achieved yet",
+          "level": "info"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "b25e87c0-7bdf-47aa-9edf-14621da56084",
+        "source": "cb6fcee6-005e-4e8e-a0af-83f5e5382c21",
+        "target": "335002ee-430e-408f-85f5-8f47c84ea9aa",
+        "type": "default"
+      },
+      {
+        "id": "08f5d721-daef-4e82-81bf-b70d8b1fddb8",
+        "source": "335002ee-430e-408f-85f5-8f47c84ea9aa",
+        "target": "79c4395e-3c95-41cb-bef4-4b3835d5d780",
+        "type": "default"
+      },
+      {
+        "id": "eac45124-9b79-4f45-a052-8ffcc48aba8b",
+        "source": "79c4395e-3c95-41cb-bef4-4b3835d5d780",
+        "target": "db3322e3-2b00-4f37-910a-cc6a68198cdc",
+        "type": "default",
+        "label": "true",
+        "sourceHandle": "true",
+        "labelStyle": {
+          "fill": "white",
+          "fontWeight": 600
+        },
+        "labelShowBg": true,
+        "labelBgStyle": {
+          "fill": "hsl(142 70% 45%)"
+        },
+        "labelBgPadding": [
+          2,
+          6
+        ],
+        "labelBgBorderRadius": 4
+      },
+      {
+        "id": "a561f7ec-7938-41bf-a4f5-f830ac2198f9",
+        "source": "79c4395e-3c95-41cb-bef4-4b3835d5d780",
+        "target": "4e8e0379-a69e-462c-a1df-fcc00ac4071d",
+        "type": "default",
+        "label": "false",
+        "sourceHandle": "false",
+        "labelStyle": {
+          "fill": "white",
+          "fontWeight": 600
+        },
+        "labelShowBg": true,
+        "labelBgStyle": {
+          "fill": "hsl(0 70% 50%)"
+        },
+        "labelBgPadding": [
+          2,
+          6
+        ],
+        "labelBgBorderRadius": 4
+      }
+    ]
+  }
+}

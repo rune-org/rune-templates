@@ -1,0 +1,155 @@
+{
+  "external_id": "maintenance-window-check",
+  "name": "Maintenance Window Check",
+  "description": "Checks the current time and logs whether the workflow is running inside a maintenance window.",
+  "category": "cloud",
+  "icon": "Cloud",
+  "tags": [
+    "log",
+    "cloud",
+    "check"
+  ],
+  "author": null,
+  "official": true,
+  "workflow_data": {
+    "nodes": [
+      {
+        "id": "73b47583-f0cf-4e6d-a353-8b17f975cd76",
+        "type": "trigger",
+        "position": {
+          "x": 518.9399347580455,
+          "y": -22.193629001525572
+        },
+        "data": {
+          "label": "Trigger"
+        }
+      },
+      {
+        "id": "8aa3794e-64f8-4aa2-bbdf-fb7a92a36e75",
+        "type": "dateTimeNow",
+        "position": {
+          "x": 767.5377340716792,
+          "y": -50.386754870603
+        },
+        "data": {
+          "label": "dateTimeNow",
+          "format": "2006-01-02T15:04:05Z07:00",
+          "timezone": "UTC"
+        }
+      },
+      {
+        "id": "402077dc-fff5-49f4-b58c-bd3216de2d9c",
+        "type": "dateTimeParse",
+        "position": {
+          "x": 1068.8710775775385,
+          "y": -64.386754870603
+        },
+        "data": {
+          "label": "dateTimeParse",
+          "date": "$dateTimeNow.result",
+          "timezone": "UTC"
+        }
+      },
+      {
+        "id": "41d591bb-7694-40b6-b565-9677c114f80c",
+        "type": "if",
+        "position": {
+          "x": 1348.537734071679,
+          "y": -64.386754870603
+        },
+        "data": {
+          "label": "If",
+          "expression": "$dateTimeParse.hour >= 22"
+        }
+      },
+      {
+        "id": "505427e4-2e0a-4747-a895-965c2d69496e",
+        "type": "log",
+        "position": {
+          "x": 1597.037734071679,
+          "y": -145.886754870603
+        },
+        "data": {
+          "label": "Log",
+          "message": "Maintenance Window",
+          "level": "info"
+        }
+      },
+      {
+        "id": "d98dd032-3c9a-4c19-a4ff-f17e9bf7e617",
+        "type": "log",
+        "position": {
+          "x": 1597.537734071679,
+          "y": -5.386754870602999
+        },
+        "data": {
+          "label": "Log_2",
+          "message": "Normal Window",
+          "level": "info"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "dcffe525-f5b2-40cf-a8d6-b2d26039e342",
+        "source": "73b47583-f0cf-4e6d-a353-8b17f975cd76",
+        "target": "8aa3794e-64f8-4aa2-bbdf-fb7a92a36e75",
+        "type": "default"
+      },
+      {
+        "id": "f4646d62-fea0-4f0d-917d-c9bbf1d4762c",
+        "source": "8aa3794e-64f8-4aa2-bbdf-fb7a92a36e75",
+        "target": "402077dc-fff5-49f4-b58c-bd3216de2d9c",
+        "type": "default"
+      },
+      {
+        "id": "eea2ecb9-2450-4058-922e-510fef4e8f4d",
+        "source": "402077dc-fff5-49f4-b58c-bd3216de2d9c",
+        "target": "41d591bb-7694-40b6-b565-9677c114f80c",
+        "type": "default"
+      },
+      {
+        "id": "25e6d96f-3715-461e-a754-2d9e48a2337f",
+        "source": "41d591bb-7694-40b6-b565-9677c114f80c",
+        "target": "505427e4-2e0a-4747-a895-965c2d69496e",
+        "type": "default",
+        "label": "true",
+        "sourceHandle": "true",
+        "labelStyle": {
+          "fill": "white",
+          "fontWeight": 600
+        },
+        "labelShowBg": true,
+        "labelBgStyle": {
+          "fill": "hsl(142 70% 45%)"
+        },
+        "labelBgPadding": [
+          2,
+          6
+        ],
+        "labelBgBorderRadius": 4
+      },
+      {
+        "id": "ecf57167-d8de-444d-a4cd-acb04291e990",
+        "source": "41d591bb-7694-40b6-b565-9677c114f80c",
+        "target": "d98dd032-3c9a-4c19-a4ff-f17e9bf7e617",
+        "type": "default",
+        "label": "false",
+        "sourceHandle": "false",
+        "labelStyle": {
+          "fill": "white",
+          "fontWeight": 600
+        },
+        "labelShowBg": true,
+        "labelBgStyle": {
+          "fill": "hsl(0 70% 50%)"
+        },
+        "labelBgPadding": [
+          2,
+          6
+        ],
+        "labelBgBorderRadius": 4
+      }
+    ]
+  }
+}
