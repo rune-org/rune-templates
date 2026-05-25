@@ -77,11 +77,11 @@ pnpm run validate             # validate every template against the schema
 pnpm run build-index          # rebuild index.json
 ```
 
-## Tag suggestions
+## Tags and Categories
 
-Tags are free-form here, but the Rune app keeps a live catalog. To get a tag
-promoted to *official*, open an issue describing the use case. 
-Don't worry about that for your first contribution, just use whatever tag feels natural.
+Tags are free-form here, but the Rune app keeps a fixed set of categories. Categories can be
+seen as widely subjective, so if you think there's a missing category that should be added
+to the catalog, open an issue describing the use case and we'd be happy to add it! 
 
 ## License
 
