@@ -17,41 +17,46 @@
     "nodes": [
       {
         "id": "a8871734-d064-4c77-b430-2a94bbab8b9a",
+        "data": {
+          "unit": "days",
+          "label": "Schedule",
+          "amount": 1
+        },
         "type": "scheduledTrigger",
         "position": {
           "x": 899.6083887785129,
           "y": -130.87738061511243
         },
-        "data": {
-          "label": "Schedule",
-          "amount": 1,
-          "unit": "days"
-        }
+        "measured": {
+          "width": 160,
+          "height": 60
+        },
+        "selected": true
       },
       {
         "id": "05174998-9a87-4045-b5b2-086f14a2c630",
+        "data": {
+          "url": "https://wttr.in/London?format=j1",
+          "label": "weather_in_london",
+          "retry": 0,
+          "method": "GET",
+          "timeout": 30,
+          "retry_delay": 0,
+          "raise_on_status": "4xx,5xx"
+        },
         "type": "http",
         "position": {
           "x": 1180.8341631926326,
           "y": -137.90236675818483
         },
-        "data": {
-          "label": "weather_in_london",
-          "method": "GET",
-          "url": "https://wttr.in/London?format=j1",
-          "timeout": 30,
-          "retry": 0,
-          "retry_delay": 0,
-          "raise_on_status": "4xx,5xx"
-        }
+        "measured": {
+          "width": 220,
+          "height": 76
+        },
+        "selected": true
       },
       {
         "id": "266e636d-b661-4696-bf25-3b78dd2b193e",
-        "type": "agent",
-        "position": {
-          "x": 1513.5009491083702,
-          "y": -166.9087049377918
-        },
         "data": {
           "label": "Agent",
           "model": {
@@ -60,50 +65,90 @@
             "provider": "gemini",
             "temperature": 0.2
           },
-          "system_prompt": "You are a helpful weather assistant. Based on the day's weather recommend in few words what the user should wear throughout the day and/or any needed precautions they should take.",
           "messages": [
             {
               "role": "user",
-              "content": "Based on today's weather: $weather_in_london.body.current_condition[0].FeelsLikeC in celsius. Craft an email to the user.",
-              "ui_id": "message_b3e55799-d8c5-4162-99eb-fe06ff500f71"
+              "ui_id": "message_b3e55799-d8c5-4162-99eb-fe06ff500f71",
+              "content": "Based on today's weather: $weather_in_london.body.current_condition[0].FeelsLikeC in celsius. Craft an email to the user."
             }
-          ]
-        }
+          ],
+          "system_prompt": "You are a helpful weather assistant. Based on the day's weather recommend in few words what the user should wear throughout the day and/or any needed precautions they should take."
+        },
+        "type": "agent",
+        "position": {
+          "x": 1513.5009491083702,
+          "y": -166.9087049377918
+        },
+        "measured": {
+          "width": 260,
+          "height": 126
+        },
+        "selected": true
       },
       {
         "id": "8b5591bc-068d-4739-99cd-fb2364a41215",
+        "data": {
+          "to": "recipient@mail.com",
+          "body": "$Agent.messages[0].content",
+          "from": "sender@mail.com",
+          "label": "SMTP",
+          "subject": "Today's weather briefing"
+        },
         "type": "smtp",
         "position": {
           "x": 1846.3942919319977,
           "y": -176.65305862554314
         },
+        "measured": {
+          "width": 220,
+          "height": 132
+        },
+        "selected": true
+      },
+      {
+        "id": "f877a221-b770-4eb1-a4ce-d2461b58c6bc",
+        "position": {
+          "x": 1229.9347844587892,
+          "y": -56.189115380673286
+        },
+        "type": "stickyNote",
         "data": {
-          "label": "SMTP",
-          "from": "sender@mail.com",
-          "to": "recipient@mail.com",
-          "subject": "Today's weather briefing",
-          "body": "$Agent.messages[0].content"
-        }
+          "label": "Note",
+          "content": "You can set this to any city/country! \n\nJust update the URL slug.",
+          "color": "pink",
+          "fontSize": "md",
+          "width": 234,
+          "height": 100
+        },
+        "measured": {
+          "width": 234,
+          "height": 100
+        },
+        "selected": true,
+        "dragging": false,
+        "width": 234,
+        "height": 100,
+        "resizing": false
       }
     ],
     "edges": [
       {
         "id": "222bfd00-50c8-43fd-b5ee-a071065f7768",
+        "type": "default",
         "source": "a8871734-d064-4c77-b430-2a94bbab8b9a",
-        "target": "05174998-9a87-4045-b5b2-086f14a2c630",
-        "type": "default"
+        "target": "05174998-9a87-4045-b5b2-086f14a2c630"
       },
       {
         "id": "6dea23e1-f398-4303-a923-3e6ec39d727e",
+        "type": "default",
         "source": "05174998-9a87-4045-b5b2-086f14a2c630",
-        "target": "266e636d-b661-4696-bf25-3b78dd2b193e",
-        "type": "default"
+        "target": "266e636d-b661-4696-bf25-3b78dd2b193e"
       },
       {
         "id": "7bfa42ed-7bc5-4693-b2fa-a00c38edc741",
+        "type": "default",
         "source": "266e636d-b661-4696-bf25-3b78dd2b193e",
-        "target": "8b5591bc-068d-4739-99cd-fb2364a41215",
-        "type": "default"
+        "target": "8b5591bc-068d-4739-99cd-fb2364a41215"
       }
     ]
   }

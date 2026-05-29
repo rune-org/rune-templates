@@ -18,50 +18,60 @@
     "nodes": [
       {
         "id": "01ea788c-2dc1-427b-93ef-316ed6a73b00",
+        "data": {
+          "label": "Trigger"
+        },
         "type": "trigger",
         "position": {
           "x": 758.9166870117188,
           "y": 505
         },
-        "data": {
-          "label": "Trigger"
-        }
+        "measured": {
+          "width": 160,
+          "height": 40
+        },
+        "selected": true
       },
       {
         "id": "cf31d43a-6a5d-4605-9ab8-65d8e1c4fee6",
+        "data": {
+          "label": "Get_Employee_Data",
+          "arguments": {
+            "range": "Sheet1!A2:Z",
+            "spreadsheet_id": "1HDiV85V7sHnA_WR2L4dSGYypLiNq6_9x6H6Lcm4SvRI"
+          },
+          "integrationKind": "integration.google.sheets.read_range"
+        },
         "type": "integration.google.sheets.read_range",
         "position": {
           "x": 989.7730183514568,
           "y": 483.61350608306066
         },
-        "data": {
-          "label": "Get_Employee_Data",
-          "integrationKind": "integration.google.sheets.read_range",
-          "arguments": {
-            "range": "Sheet1!A2:Z",
-            "spreadsheet_id": "1HDiV85V7sHnA_WR2L4dSGYypLiNq6_9x6H6Lcm4SvRI"
-          }
-        }
+        "measured": {
+          "width": 220,
+          "height": 90
+        },
+        "selected": true
       },
       {
         "id": "040d2fc9-9d6c-4817-981a-85caffe691bc",
+        "data": {
+          "label": "Each_User",
+          "array_field": "$Get_Employee_Data.body.values"
+        },
         "type": "split",
         "position": {
           "x": 1562.0222261973618,
           "y": 477.60474848991646
         },
-        "data": {
-          "label": "Each_User",
-          "array_field": "$Get_Employee_Data.body.values"
-        }
+        "measured": {
+          "width": 220,
+          "height": 72
+        },
+        "selected": true
       },
       {
         "id": "f410bf17-a398-497d-a802-6e58be7f4f83",
-        "type": "agent",
-        "position": {
-          "x": 1872.349898816104,
-          "y": 433.11460387397204
-        },
         "data": {
           "label": "Agent",
           "model": {
@@ -70,98 +80,147 @@
             "provider": "gemini",
             "temperature": 2
           },
-          "system_prompt": "You are a helpful corporate assistant. Your responsibility is to track paid days off for a given company's users and act on them.",
           "messages": [
             {
               "role": "user",
-              "content": "You will do a simple calculation and ONLY respond with:\n- on success : \"PASSED\" literally\n- on failure: a custom email \n\nDo not add type out your reasoning or breakdown of steps only FINAL ANSWER.\n\nYou will get data of an employee, you will check the days logged since they joined the company, if they logged less than 90 percent of the working days, there are 20 working days in the month.\n\nIf they log less than 90 percent create a custom mail message that warns them about their attendance.\n\nUser Data: $item\nToday's Date: $Today_Date.result\n\nYOU MUST ADHERE TO THE FIRST RULE, EITHER YOU RETURN THE EMAIL OR THE LITERAL STRING \"PASSED\"",
-              "ui_id": "message_1badadfd-b276-4dfa-8e6b-ff7f669bb336"
+              "ui_id": "message_1badadfd-b276-4dfa-8e6b-ff7f669bb336",
+              "content": "You will do a simple calculation and ONLY respond with:\n- on success : \"PASSED\" literally\n- on failure: a custom email \n\nDo not add type out your reasoning or breakdown of steps only FINAL ANSWER.\n\nYou will get data of an employee, you will check the days logged since they joined the company, if they logged less than 90 percent of the working days, there are 20 working days in the month.\n\nIf they log less than 90 percent create a custom mail message that warns them about their attendance.\n\nUser Data: $item\nToday's Date: $Today_Date.result\n\nYOU MUST ADHERE TO THE FIRST RULE, EITHER YOU RETURN THE EMAIL OR THE LITERAL STRING \"PASSED\""
             }
-          ]
-        }
+          ],
+          "system_prompt": "You are a helpful corporate assistant. Your responsibility is to track paid days off for a given company's users and act on them."
+        },
+        "type": "agent",
+        "position": {
+          "x": 1872.349898816104,
+          "y": 433.11460387397204
+        },
+        "measured": {
+          "width": 260,
+          "height": 126
+        },
+        "selected": true
       },
       {
         "id": "8aad416f-ce60-4fde-a979-01a814c6e813",
+        "data": {
+          "label": "Today_Date",
+          "format": "2006-01-02",
+          "timezone": "Africa/Cairo"
+        },
         "type": "dateTimeNow",
         "position": {
           "x": 1258.992333992475,
           "y": 481.49061010369593
         },
-        "data": {
-          "label": "Today_Date",
-          "format": "2006-01-02",
-          "timezone": "Africa/Cairo"
-        }
+        "measured": {
+          "width": 220,
+          "height": 92
+        },
+        "selected": true
       },
       {
         "id": "ddb76f1e-ac3d-48ff-8e4f-b8c16ff6701b",
+        "data": {
+          "label": "Should_Alert",
+          "expression": "$Agent.final_response != \"PASSED\""
+        },
         "type": "if",
         "position": {
           "x": 2198.1785568721652,
           "y": 459.9148956950196
         },
-        "data": {
-          "label": "Should_Alert",
-          "expression": "$Agent.final_response != \"PASSED\""
-        }
+        "measured": {
+          "width": 200,
+          "height": 68
+        },
+        "selected": true
       },
       {
         "id": "5dcf2ce6-658f-4463-93b6-dd661a29c316",
-        "type": "integration.google.gmail.send_email",
-        "position": {
-          "x": 2511.7311494558567,
-          "y": 461.8411594318396
-        },
         "data": {
           "label": "Send_Email",
-          "integrationKind": "integration.google.gmail.send_email",
           "arguments": {
             "to": "$item[1]",
             "body": "$Agent.final_response",
             "subject": "Alert",
             "bodyType": "text"
-          }
-        }
+          },
+          "integrationKind": "integration.google.gmail.send_email"
+        },
+        "type": "integration.google.gmail.send_email",
+        "position": {
+          "x": 2511.7311494558567,
+          "y": 461.8411594318396
+        },
+        "measured": {
+          "width": 220,
+          "height": 90
+        },
+        "selected": true
+      },
+      {
+        "id": "f866c9ad-f056-47ee-b5c6-ba17eb9abbe9",
+        "position": {
+          "x": 1047.7983257733285,
+          "y": 598.4495220860699
+        },
+        "type": "stickyNote",
+        "data": {
+          "label": "Note",
+          "content": "This is fetching data from our [template google sheet](https://docs.google.com/spreadsheets/d/1HDiV85V7sHnA_WR2L4dSGYypLiNq6_9x6H6Lcm4SvRI/edit?usp=sharing) The `id` field is whatever comes after `spreadsheets/d`. \n\nUpdate this as needed.",
+          "color": "green",
+          "fontSize": "md",
+          "width": 253,
+          "height": 155
+        },
+        "measured": {
+          "width": 253,
+          "height": 155
+        },
+        "selected": true,
+        "dragging": false,
+        "width": 253,
+        "height": 155,
+        "resizing": false
       }
     ],
     "edges": [
       {
         "id": "b2a9f6ee-54ec-4384-8651-24f9a515e53c",
+        "type": "default",
         "source": "01ea788c-2dc1-427b-93ef-316ed6a73b00",
-        "target": "cf31d43a-6a5d-4605-9ab8-65d8e1c4fee6",
-        "type": "default"
+        "target": "cf31d43a-6a5d-4605-9ab8-65d8e1c4fee6"
       },
       {
         "id": "773020d8-5091-425a-b8d9-843588965b22",
+        "type": "default",
         "source": "cf31d43a-6a5d-4605-9ab8-65d8e1c4fee6",
-        "target": "8aad416f-ce60-4fde-a979-01a814c6e813",
-        "type": "default"
+        "target": "8aad416f-ce60-4fde-a979-01a814c6e813"
       },
       {
         "id": "6650e1a6-63e0-4111-b862-409c014f720a",
+        "type": "default",
         "source": "8aad416f-ce60-4fde-a979-01a814c6e813",
-        "target": "040d2fc9-9d6c-4817-981a-85caffe691bc",
-        "type": "default"
+        "target": "040d2fc9-9d6c-4817-981a-85caffe691bc"
       },
       {
         "id": "bf6e6f09-deaf-48ce-b398-b5e8cbbd9b90",
+        "type": "default",
         "source": "f410bf17-a398-497d-a802-6e58be7f4f83",
-        "target": "ddb76f1e-ac3d-48ff-8e4f-b8c16ff6701b",
-        "type": "default"
+        "target": "ddb76f1e-ac3d-48ff-8e4f-b8c16ff6701b"
       },
       {
         "id": "8c5a5626-eb64-4e30-a183-087854f2262e",
+        "type": "default",
         "source": "040d2fc9-9d6c-4817-981a-85caffe691bc",
-        "target": "f410bf17-a398-497d-a802-6e58be7f4f83",
-        "type": "default"
+        "target": "f410bf17-a398-497d-a802-6e58be7f4f83"
       },
       {
         "id": "90ce2b66-6438-4753-8726-b48456b29bfe",
-        "source": "ddb76f1e-ac3d-48ff-8e4f-b8c16ff6701b",
-        "target": "5dcf2ce6-658f-4463-93b6-dd661a29c316",
         "type": "default",
         "label": "true",
-        "sourceHandle": "true",
+        "source": "ddb76f1e-ac3d-48ff-8e4f-b8c16ff6701b",
+        "target": "5dcf2ce6-658f-4463-93b6-dd661a29c316",
         "labelStyle": {
           "fill": "white",
           "fontWeight": 600
@@ -170,6 +229,7 @@
         "labelBgStyle": {
           "fill": "hsl(142 70% 45%)"
         },
+        "sourceHandle": "true",
         "labelBgPadding": [
           2,
           6
