@@ -25,12 +25,7 @@
         "position": {
           "x": 758.9166870117188,
           "y": 505
-        },
-        "measured": {
-          "width": 160,
-          "height": 40
-        },
-        "selected": true
+        }
       },
       {
         "id": "cf31d43a-6a5d-4605-9ab8-65d8e1c4fee6",
@@ -46,12 +41,7 @@
         "position": {
           "x": 989.7730183514568,
           "y": 483.61350608306066
-        },
-        "measured": {
-          "width": 220,
-          "height": 90
-        },
-        "selected": true
+        }
       },
       {
         "id": "040d2fc9-9d6c-4817-981a-85caffe691bc",
@@ -63,12 +53,7 @@
         "position": {
           "x": 1562.0222261973618,
           "y": 477.60474848991646
-        },
-        "measured": {
-          "width": 220,
-          "height": 72
-        },
-        "selected": true
+        }
       },
       {
         "id": "f410bf17-a398-497d-a802-6e58be7f4f83",
@@ -93,12 +78,7 @@
         "position": {
           "x": 1872.349898816104,
           "y": 433.11460387397204
-        },
-        "measured": {
-          "width": 260,
-          "height": 126
-        },
-        "selected": true
+        }
       },
       {
         "id": "8aad416f-ce60-4fde-a979-01a814c6e813",
@@ -111,12 +91,7 @@
         "position": {
           "x": 1258.992333992475,
           "y": 481.49061010369593
-        },
-        "measured": {
-          "width": 220,
-          "height": 92
-        },
-        "selected": true
+        }
       },
       {
         "id": "ddb76f1e-ac3d-48ff-8e4f-b8c16ff6701b",
@@ -128,12 +103,7 @@
         "position": {
           "x": 2198.1785568721652,
           "y": 459.9148956950196
-        },
-        "measured": {
-          "width": 200,
-          "height": 68
-        },
-        "selected": true
+        }
       },
       {
         "id": "5dcf2ce6-658f-4463-93b6-dd661a29c316",
@@ -151,37 +121,23 @@
         "position": {
           "x": 2511.7311494558567,
           "y": 461.8411594318396
-        },
-        "measured": {
-          "width": 220,
-          "height": 90
-        },
-        "selected": true
+        }
       },
       {
         "id": "f866c9ad-f056-47ee-b5c6-ba17eb9abbe9",
+        "data": {
+          "color": "green",
+          "label": "Note",
+          "width": 253,
+          "height": 155,
+          "content": "This is fetching data from our [template google sheet](https://docs.google.com/spreadsheets/d/1HDiV85V7sHnA_WR2L4dSGYypLiNq6_9x6H6Lcm4SvRI/edit?usp=sharing) The `id` field is whatever comes after `spreadsheets/d`. \n\nUpdate this as needed.",
+          "fontSize": "md"
+        },
+        "type": "stickyNote",
         "position": {
           "x": 1047.7983257733285,
           "y": 598.4495220860699
-        },
-        "type": "stickyNote",
-        "data": {
-          "label": "Note",
-          "content": "This is fetching data from our [template google sheet](https://docs.google.com/spreadsheets/d/1HDiV85V7sHnA_WR2L4dSGYypLiNq6_9x6H6Lcm4SvRI/edit?usp=sharing) The `id` field is whatever comes after `spreadsheets/d`. \n\nUpdate this as needed.",
-          "color": "green",
-          "fontSize": "md",
-          "width": 253,
-          "height": 155
-        },
-        "measured": {
-          "width": 253,
-          "height": 155
-        },
-        "selected": true,
-        "dragging": false,
-        "width": 253,
-        "height": 155,
-        "resizing": false
+        }
       }
     ],
     "edges": [

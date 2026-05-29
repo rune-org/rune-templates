@@ -26,12 +26,7 @@
         "position": {
           "x": 899.6083887785129,
           "y": -130.87738061511243
-        },
-        "measured": {
-          "width": 160,
-          "height": 60
-        },
-        "selected": true
+        }
       },
       {
         "id": "05174998-9a87-4045-b5b2-086f14a2c630",
@@ -48,12 +43,7 @@
         "position": {
           "x": 1180.8341631926326,
           "y": -137.90236675818483
-        },
-        "measured": {
-          "width": 220,
-          "height": 76
-        },
-        "selected": true
+        }
       },
       {
         "id": "266e636d-b661-4696-bf25-3b78dd2b193e",
@@ -78,12 +68,7 @@
         "position": {
           "x": 1513.5009491083702,
           "y": -166.9087049377918
-        },
-        "measured": {
-          "width": 260,
-          "height": 126
-        },
-        "selected": true
+        }
       },
       {
         "id": "8b5591bc-068d-4739-99cd-fb2364a41215",
@@ -98,37 +83,23 @@
         "position": {
           "x": 1846.3942919319977,
           "y": -176.65305862554314
-        },
-        "measured": {
-          "width": 220,
-          "height": 132
-        },
-        "selected": true
+        }
       },
       {
         "id": "f877a221-b770-4eb1-a4ce-d2461b58c6bc",
+        "data": {
+          "color": "pink",
+          "label": "Note",
+          "width": 234,
+          "height": 100,
+          "content": "You can set this to any city/country! \n\nJust update the URL slug.",
+          "fontSize": "md"
+        },
+        "type": "stickyNote",
         "position": {
           "x": 1229.9347844587892,
           "y": -56.189115380673286
-        },
-        "type": "stickyNote",
-        "data": {
-          "label": "Note",
-          "content": "You can set this to any city/country! \n\nJust update the URL slug.",
-          "color": "pink",
-          "fontSize": "md",
-          "width": 234,
-          "height": 100
-        },
-        "measured": {
-          "width": 234,
-          "height": 100
-        },
-        "selected": true,
-        "dragging": false,
-        "width": 234,
-        "height": 100,
-        "resizing": false
+        }
       }
     ],
     "edges": [
