@@ -1,7 +1,24 @@
 {
-  "generated_at": "2026-05-24T23:32:08Z",
-  "template_count": 8,
+  "generated_at": "2026-06-02T19:51:35Z",
+  "template_count": 11,
   "templates": [
+    {
+      "external_id": "cross-channel-digest-builder",
+      "name": "Cross-channel Digest Builder",
+      "description": "On a daily schedule, fetch recent unread Gmail messages and recent Slack channel activity, merge both branches, and post a single summary to Slack. Connect Google and Slack credentials, set your Slack channel ID, and customize search filters.",
+      "category": "analytics",
+      "icon": "Mail",
+      "tags": [
+        "digest",
+        "gmail",
+        "slack",
+        "scheduled",
+        "reporting",
+        "merge"
+      ],
+      "author": null,
+      "path": "templates/analytics/cross-channel-digest-builder.json"
+    },
     {
       "external_id": "daily-rss-digest",
       "name": "Daily RSS Digest",
@@ -94,6 +111,22 @@
       "path": "templates/cloud/maintenance-window-check.json"
     },
     {
+      "external_id": "scheduled-api-to-sheets-snapshot",
+      "name": "Scheduled API Poll to Sheets Snapshot",
+      "description": "Poll an HTTP API on a schedule and write the latest response into a Google Sheet range. Connect Google OAuth, replace the API URL and spreadsheet ID, and tune the schedule and column mapping for your data source.",
+      "category": "analytics",
+      "icon": "BarChart3",
+      "tags": [
+        "scheduled",
+        "http",
+        "google-sheets",
+        "reporting",
+        "snapshot"
+      ],
+      "author": null,
+      "path": "templates/analytics/scheduled-api-to-sheets-snapshot.json"
+    },
+    {
       "external_id": "sheets-gmail-tracker",
       "name": "sheets → gmail tracker",
       "description": "A google sheets / gmail integrated attendance tracker with AI reasoning.",
@@ -126,6 +159,21 @@
       ],
       "author": null,
       "path": "templates/analytics/uptime-threshold-check.json"
+    },
+    {
+      "external_id": "webhook-to-sheets-logger",
+      "name": "Webhook to Google Sheets Logger",
+      "description": "Capture incoming webhook payloads and append each submission as a new row in Google Sheets. After using the template, connect a Google OAuth credential, set your spreadsheet ID, and adjust column mappings to match your webhook body.",
+      "category": "analytics",
+      "icon": "sheet",
+      "tags": [
+        "webhook",
+        "google-sheets",
+        "logging",
+        "forms"
+      ],
+      "author": null,
+      "path": "templates/analytics/webhook-to-sheets-logger.json"
     }
   ]
 }
