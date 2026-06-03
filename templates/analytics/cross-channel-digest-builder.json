@@ -1,0 +1,128 @@
+{
+  "external_id": "cross-channel-digest-builder",
+  "name": "Cross-channel Digest Builder",
+  "description": "On a daily schedule, fetch recent unread Gmail messages and recent Slack channel activity, merge both branches, and post a single summary to Slack. Connect Google and Slack credentials, set your Slack channel ID, and customize search filters.",
+  "category": "analytics",
+  "icon": "Mail",
+  "tags": ["digest", "gmail", "slack", "scheduled", "reporting", "merge"],
+  "author": null,
+  "official": true,
+  "workflow_data": {
+    "nodes": [
+      {
+        "id": "c1b2c3d4-3333-4000-8000-000000000001",
+        "type": "scheduledTrigger",
+        "position": { "x": 80, "y": 200 },
+        "data": {
+          "label": "Daily_Digest",
+          "amount": 1,
+          "unit": "days"
+        }
+      },
+      {
+        "id": "c1b2c3d4-3333-4000-8000-000000000002",
+        "type": "integration.google.gmail.search_emails",
+        "position": { "x": 360, "y": 80 },
+        "data": {
+          "label": "Unread_Email",
+          "integrationKind": "integration.google.gmail.search_emails",
+          "arguments": {
+            "q": "is:unread newer_than:1d",
+            "maxResults": 10,
+            "includeSpamTrash": false
+          }
+        }
+      },
+      {
+        "id": "c1b2c3d4-3333-4000-8000-000000000003",
+        "type": "integration.slack.conversations.history",
+        "position": { "x": 360, "y": 320 },
+        "data": {
+          "label": "Slack_Activity",
+          "integrationKind": "integration.slack.conversations.history",
+          "arguments": {
+            "channel": "YOUR_SLACK_CHANNEL_ID",
+            "limit": 20
+          }
+        }
+      },
+      {
+        "id": "c1b2c3d4-3333-4000-8000-000000000004",
+        "type": "merge",
+        "position": { "x": 640, "y": 200 },
+        "data": {
+          "label": "Combine_Sources",
+          "wait_mode": "wait_for_all",
+          "timeout": 300
+        }
+      },
+      {
+        "id": "c1b2c3d4-3333-4000-8000-000000000005",
+        "type": "edit",
+        "position": { "x": 920, "y": 200 },
+        "data": {
+          "label": "Format_Summary",
+          "mode": "assignments",
+          "assignments": [
+            {
+              "name": "digest_text",
+              "value": "Daily digest\n\nUnread email results: $unread_email\n\nRecent Slack messages: $slack_activity",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      {
+        "id": "c1b2c3d4-3333-4000-8000-000000000006",
+        "type": "integration.slack.chat.post_message",
+        "position": { "x": 1200, "y": 200 },
+        "data": {
+          "label": "Post_Digest",
+          "integrationKind": "integration.slack.chat.post_message",
+          "arguments": {
+            "channel": "YOUR_SLACK_CHANNEL_ID",
+            "text": "$format_summary.digest_text"
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1-2",
+        "source": "c1b2c3d4-3333-4000-8000-000000000001",
+        "target": "c1b2c3d4-3333-4000-8000-000000000002",
+        "type": "default"
+      },
+      {
+        "id": "e1-3",
+        "source": "c1b2c3d4-3333-4000-8000-000000000001",
+        "target": "c1b2c3d4-3333-4000-8000-000000000003",
+        "type": "default"
+      },
+      {
+        "id": "e2-4",
+        "source": "c1b2c3d4-3333-4000-8000-000000000002",
+        "target": "c1b2c3d4-3333-4000-8000-000000000004",
+        "type": "default"
+      },
+      {
+        "id": "e3-4",
+        "source": "c1b2c3d4-3333-4000-8000-000000000003",
+        "target": "c1b2c3d4-3333-4000-8000-000000000004",
+        "type": "default"
+      },
+      {
+        "id": "e4-5",
+        "source": "c1b2c3d4-3333-4000-8000-000000000004",
+        "target": "c1b2c3d4-3333-4000-8000-000000000005",
+        "type": "default"
+      },
+      {
+        "id": "e5-6",
+        "source": "c1b2c3d4-3333-4000-8000-000000000005",
+        "target": "c1b2c3d4-3333-4000-8000-000000000006",
+        "type": "default"
+      }
+    ]
+  }
+}

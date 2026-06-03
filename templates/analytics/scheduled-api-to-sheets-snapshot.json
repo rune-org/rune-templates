@@ -1,0 +1,105 @@
+{
+  "external_id": "scheduled-api-to-sheets-snapshot",
+  "name": "Scheduled API Poll to Sheets Snapshot",
+  "description": "Poll an HTTP API on a schedule and write the latest response into a Google Sheet range. Connect Google OAuth, replace the API URL and spreadsheet ID, and tune the schedule and column mapping for your data source.",
+  "category": "analytics",
+  "icon": "BarChart3",
+  "tags": ["scheduled", "http", "google-sheets", "reporting", "snapshot"],
+  "author": null,
+  "official": true,
+  "workflow_data": {
+    "nodes": [
+      {
+        "id": "b1b2c3d4-2222-4000-8000-000000000001",
+        "type": "scheduledTrigger",
+        "position": { "x": 80, "y": 120 },
+        "data": {
+          "label": "Hourly_Poll",
+          "amount": 1,
+          "unit": "hours"
+        }
+      },
+      {
+        "id": "b1b2c3d4-2222-4000-8000-000000000002",
+        "type": "http",
+        "position": { "x": 360, "y": 120 },
+        "data": {
+          "label": "Fetch_API",
+          "method": "GET",
+          "url": "https://jsonplaceholder.typicode.com/todos/1",
+          "timeout": 30,
+          "retry": 0,
+          "retry_delay": 0,
+          "raise_on_status": "4xx,5xx"
+        }
+      },
+      {
+        "id": "b1b2c3d4-2222-4000-8000-000000000003",
+        "type": "edit",
+        "position": { "x": 640, "y": 120 },
+        "data": {
+          "label": "Map_Snapshot",
+          "mode": "assignments",
+          "assignments": [
+            {
+              "name": "snapshot_id",
+              "value": "$fetch_api.body.id",
+              "type": "string"
+            },
+            {
+              "name": "snapshot_title",
+              "value": "$fetch_api.body.title",
+              "type": "string"
+            },
+            {
+              "name": "snapshot_completed",
+              "value": "$fetch_api.body.completed",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      {
+        "id": "b1b2c3d4-2222-4000-8000-000000000004",
+        "type": "integration.google.sheets.write_range",
+        "position": { "x": 920, "y": 120 },
+        "data": {
+          "label": "Write_Snapshot",
+          "integrationKind": "integration.google.sheets.write_range",
+          "arguments": {
+            "spreadsheet_id": "YOUR_SPREADSHEET_ID",
+            "range": "Sheet1!A2:C2",
+            "value_input_option": "USER_ENTERED",
+            "values": [
+              [
+                "$map_snapshot.snapshot_id",
+                "$map_snapshot.snapshot_title",
+                "$map_snapshot.snapshot_completed"
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1-2",
+        "source": "b1b2c3d4-2222-4000-8000-000000000001",
+        "target": "b1b2c3d4-2222-4000-8000-000000000002",
+        "type": "default"
+      },
+      {
+        "id": "e2-3",
+        "source": "b1b2c3d4-2222-4000-8000-000000000002",
+        "target": "b1b2c3d4-2222-4000-8000-000000000003",
+        "type": "default"
+      },
+      {
+        "id": "e3-4",
+        "source": "b1b2c3d4-2222-4000-8000-000000000003",
+        "target": "b1b2c3d4-2222-4000-8000-000000000004",
+        "type": "default"
+      }
+    ]
+  }
+}

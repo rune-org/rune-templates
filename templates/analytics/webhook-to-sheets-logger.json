@@ -1,0 +1,79 @@
+{
+  "external_id": "webhook-to-sheets-logger",
+  "name": "Webhook to Google Sheets Logger",
+  "description": "Capture incoming webhook payloads and append each submission as a new row in Google Sheets. After using the template, connect a Google OAuth credential, set your spreadsheet ID, and adjust column mappings to match your webhook body.",
+  "category": "analytics",
+  "icon": "sheet",
+  "tags": ["webhook", "google-sheets", "logging", "forms"],
+  "author": null,
+  "official": true,
+  "workflow_data": {
+    "nodes": [
+      {
+        "id": "a1b2c3d4-1111-4000-8000-000000000001",
+        "type": "webhookTrigger",
+        "position": { "x": 80, "y": 120 },
+        "data": {
+          "label": "Webhook"
+        }
+      },
+      {
+        "id": "a1b2c3d4-1111-4000-8000-000000000002",
+        "type": "edit",
+        "position": { "x": 360, "y": 120 },
+        "data": {
+          "label": "Map_Row",
+          "mode": "assignments",
+          "assignments": [
+            {
+              "name": "timestamp",
+              "value": "$webhook.body.timestamp",
+              "type": "string"
+            },
+            {
+              "name": "email",
+              "value": "$webhook.body.email",
+              "type": "string"
+            },
+            {
+              "name": "message",
+              "value": "$webhook.body.message",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      {
+        "id": "a1b2c3d4-1111-4000-8000-000000000003",
+        "type": "integration.google.sheets.append_row",
+        "position": { "x": 640, "y": 120 },
+        "data": {
+          "label": "Append_Row",
+          "integrationKind": "integration.google.sheets.append_row",
+          "arguments": {
+            "spreadsheet_id": "YOUR_SPREADSHEET_ID",
+            "sheet_name": "Sheet1",
+            "value_input_option": "USER_ENTERED",
+            "values": [
+              ["$map_row.timestamp", "$map_row.email", "$map_row.message"]
+            ]
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1-2",
+        "source": "a1b2c3d4-1111-4000-8000-000000000001",
+        "target": "a1b2c3d4-1111-4000-8000-000000000002",
+        "type": "default"
+      },
+      {
+        "id": "e2-3",
+        "source": "a1b2c3d4-1111-4000-8000-000000000002",
+        "target": "a1b2c3d4-1111-4000-8000-000000000003",
+        "type": "default"
+      }
+    ]
+  }
+}
