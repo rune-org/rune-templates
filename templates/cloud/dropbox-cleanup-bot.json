@@ -1,0 +1,194 @@
+{
+  "external_id": "dropbox-cleanup-bot",
+  "name": "Dropbox Temp File Cleanup Bot",
+  "description": "Automatically scan a Dropbox folder, retrieve detailed file metadata (size, last modified time, name), use AI to decide if the file is temporary/expired, and automatically delete it.",
+  "category": "cloud",
+  "icon": "cloud",
+  "tags": [
+    "dropbox",
+    "metadata",
+    "cleanup",
+    "ai",
+    "automation"
+  ],
+  "author": null,
+  "official": true,
+  "workflow_data": {
+    "nodes": [
+      {
+        "id": "trigger-node",
+        "type": "trigger",
+        "data": {
+          "label": "Trigger"
+        },
+        "position": {
+          "x": 100,
+          "y": 200
+        }
+      },
+      {
+        "id": "list-folder-node",
+        "type": "integration.dropbox.files.list_folder",
+        "data": {
+          "label": "List Folder",
+          "integrationKind": "integration.dropbox.files.list_folder",
+          "arguments": {
+            "path": "/Temporary",
+            "recursive": false
+          }
+        },
+        "position": {
+          "x": 350,
+          "y": 200
+        }
+      },
+      {
+        "id": "get-metadata-node",
+        "type": "integration.dropbox.files.get_metadata",
+        "data": {
+          "label": "Get Metadata",
+          "integrationKind": "integration.dropbox.files.get_metadata",
+          "arguments": {
+            "path": "$List_Folder.body.entries[0].path_display"
+          }
+        },
+        "position": {
+          "x": 600,
+          "y": 200
+        }
+      },
+      {
+        "id": "agent-node",
+        "type": "agent",
+        "data": {
+          "label": "AI Cleanup Evaluator",
+          "system_prompt": "You are a cloud storage assistant evaluating files for deletion. Analyze the file details. If the file name contains 'temp', 'draft', or 'expired', or the file size is 0 bytes, respond with 'DELETE'. Otherwise, respond with 'KEEP'.",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Please evaluate this file:\nName: $Get_Metadata.body.name\nPath: $Get_Metadata.body.path_display\nSize: $Get_Metadata.body.size bytes\nLast Modified: $Get_Metadata.body.client_modified"
+            }
+          ],
+          "model": {
+            "provider": "gemini",
+            "name": "gemini-2.0-flash",
+            "backend": "ai_studio",
+            "temperature": 0.1
+          }
+        },
+        "position": {
+          "x": 850,
+          "y": 200
+        }
+      },
+      {
+        "id": "if-node",
+        "type": "if",
+        "data": {
+          "label": "Should Delete?",
+          "expression": "$AI_Cleanup_Evaluator.final_response == \"DELETE\""
+        },
+        "position": {
+          "x": 1100,
+          "y": 200
+        }
+      },
+      {
+        "id": "delete-node",
+        "type": "integration.dropbox.files.delete",
+        "data": {
+          "label": "Delete File",
+          "integrationKind": "integration.dropbox.files.delete",
+          "arguments": {
+            "path": "$Get_Metadata.body.path_display"
+          }
+        },
+        "position": {
+          "x": 1350,
+          "y": 100
+        }
+      },
+      {
+        "id": "log-node",
+        "type": "log",
+        "data": {
+          "label": "Log Keep File",
+          "message": "File $Get_Metadata.body.name is safe to keep. AI evaluation: $AI_Cleanup_Evaluator.final_response",
+          "level": "info"
+        },
+        "position": {
+          "x": 1350,
+          "y": 320
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge-1",
+        "source": "trigger-node",
+        "target": "list-folder-node",
+        "type": "default"
+      },
+      {
+        "id": "edge-2",
+        "source": "list-folder-node",
+        "target": "get-metadata-node",
+        "type": "default"
+      },
+      {
+        "id": "edge-3",
+        "source": "get-metadata-node",
+        "target": "agent-node",
+        "type": "default"
+      },
+      {
+        "id": "edge-4",
+        "source": "agent-node",
+        "target": "if-node",
+        "type": "default"
+      },
+      {
+        "id": "edge-5",
+        "source": "if-node",
+        "target": "delete-node",
+        "type": "default",
+        "label": "true",
+        "sourceHandle": "true",
+        "labelStyle": {
+          "fill": "white",
+          "fontWeight": 600
+        },
+        "labelShowBg": true,
+        "labelBgStyle": {
+          "fill": "hsl(142 70% 45%)"
+        },
+        "labelBgPadding": [
+          2,
+          6
+        ],
+        "labelBgBorderRadius": 4
+      },
+      {
+        "id": "edge-6",
+        "source": "if-node",
+        "target": "log-node",
+        "type": "default",
+        "label": "false",
+        "sourceHandle": "false",
+        "labelStyle": {
+          "fill": "white",
+          "fontWeight": 600
+        },
+        "labelShowBg": true,
+        "labelBgStyle": {
+          "fill": "hsl(0 72% 51%)"
+        },
+        "labelBgPadding": [
+          2,
+          6
+        ],
+        "labelBgBorderRadius": 4
+      }
+    ]
+  }
+}

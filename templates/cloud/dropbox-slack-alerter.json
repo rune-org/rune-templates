@@ -1,0 +1,98 @@
+{
+  "external_id": "dropbox-slack-alerter",
+  "name": "Dropbox Slack Alerter",
+  "description": "Send alerts and direct download links to Slack channels automatically when new design mockups or files are added to Dropbox.",
+  "category": "cloud",
+  "icon": "cloud",
+  "tags": [
+    "dropbox",
+    "slack",
+    "alerts",
+    "automation"
+  ],
+  "author": null,
+  "official": true,
+  "workflow_data": {
+    "nodes": [
+      {
+        "id": "b84f3c0c-7b86-4f4f-8012-70b925b42ab8",
+        "type": "webhookTrigger",
+        "data": {
+          "label": "Dropbox Webhook Trigger"
+        },
+        "position": {
+          "x": 100,
+          "y": 200
+        }
+      },
+      {
+        "id": "a21b3c94-82f5-4674-8b01-5126faee960d",
+        "type": "integration.dropbox.files.search",
+        "data": {
+          "label": "Search File",
+          "integrationKind": "integration.dropbox.files.search",
+          "arguments": {
+            "query": "$webhookTrigger.body.delta.entries[0].name",
+            "path": "/Designs",
+            "filename_only": true
+          }
+        },
+        "position": {
+          "x": 350,
+          "y": 200
+        }
+      },
+      {
+        "id": "d94a1b02-5c02-4f32-841c-9214fb011e03",
+        "type": "integration.dropbox.files.get_temporary_link",
+        "data": {
+          "label": "Get Temporary Link",
+          "integrationKind": "integration.dropbox.files.get_temporary_link",
+          "arguments": {
+            "path": "$Search_File.body.matches[0].metadata.metadata.path_display"
+          }
+        },
+        "position": {
+          "x": 600,
+          "y": 200
+        }
+      },
+      {
+        "id": "e02b85cf-512c-4b62-9a02-b2d9fa9b15d2",
+        "type": "integration.slack.chat.post_message",
+        "data": {
+          "label": "Send Message",
+          "integrationKind": "integration.slack.chat.post_message",
+          "arguments": {
+            "channel": "C123456",
+            "text": "🎨 A new design asset has been uploaded: *$Search_File.body.matches[0].metadata.metadata.name*\n📂 Path: `$Search_File.body.matches[0].metadata.metadata.path_display`\n🔗 Download Link (valid for 4 hours): $Get_Temporary_Link.body.link"
+          }
+        },
+        "position": {
+          "x": 850,
+          "y": 200
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge-1",
+        "source": "b84f3c0c-7b86-4f4f-8012-70b925b42ab8",
+        "target": "a21b3c94-82f5-4674-8b01-5126faee960d",
+        "type": "default"
+      },
+      {
+        "id": "edge-2",
+        "source": "a21b3c94-82f5-4674-8b01-5126faee960d",
+        "target": "d94a1b02-5c02-4f32-841c-9214fb011e03",
+        "type": "default"
+      },
+      {
+        "id": "edge-3",
+        "source": "d94a1b02-5c02-4f32-841c-9214fb011e03",
+        "target": "e02b85cf-512c-4b62-9a02-b2d9fa9b15d2",
+        "type": "default"
+      }
+    ]
+  }
+}
