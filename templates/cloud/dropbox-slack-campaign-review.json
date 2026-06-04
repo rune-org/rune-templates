@@ -1,0 +1,182 @@
+{
+  "external_id": "dropbox-slack-campaign-review",
+  "name": "Dropbox to Slack Campaign Review",
+  "description": "Daily scheduled workflow to list a folder, filter for newly added image assets using AI, generate temporary download links, and post them to a Slack channel for review.",
+  "category": "cloud",
+  "icon": "cloud",
+  "tags": [
+    "dropbox",
+    "slack",
+    "split",
+    "scheduled",
+    "ai",
+    "marketing"
+  ],
+  "author": null,
+  "official": true,
+  "workflow_data": {
+    "nodes": [
+      {
+        "id": "scheduled-trigger-node",
+        "type": "scheduledTrigger",
+        "data": {
+          "label": "Daily Schedule",
+          "amount": 1,
+          "unit": "days"
+        },
+        "position": {
+          "x": 100,
+          "y": 200
+        }
+      },
+      {
+        "id": "list-folder-node",
+        "type": "integration.dropbox.files.list_folder",
+        "data": {
+          "label": "List Campaign Folder",
+          "integrationKind": "integration.dropbox.files.list_folder",
+          "arguments": {
+            "path": "/Campaigns/Active",
+            "recursive": false
+          }
+        },
+        "position": {
+          "x": 350,
+          "y": 200
+        }
+      },
+      {
+        "id": "split-node",
+        "type": "split",
+        "data": {
+          "label": "For Each File",
+          "array_field": "$List_Campaign_Folder.body.entries"
+        },
+        "position": {
+          "x": 600,
+          "y": 200
+        }
+      },
+      {
+        "id": "agent-node",
+        "type": "agent",
+        "data": {
+          "label": "Image Filter Agent",
+          "system_prompt": "You are a file classifier. Inspect the file metadata. If the file name ends with an image extension (like .png, .jpg, .jpeg, .webp, .gif), respond with 'IMAGE'. Otherwise, respond with 'SKIP'.",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Please classify this file:\nName: $item.name\nPath: $item.path_display"
+            }
+          ],
+          "model": {
+            "provider": "gemini",
+            "name": "gemini-2.0-flash",
+            "backend": "ai_studio",
+            "temperature": 0.1
+          }
+        },
+        "position": {
+          "x": 850,
+          "y": 200
+        }
+      },
+      {
+        "id": "if-node",
+        "type": "if",
+        "data": {
+          "label": "Is Image?",
+          "expression": "$Image_Filter_Agent.final_response == \"IMAGE\""
+        },
+        "position": {
+          "x": 1100,
+          "y": 200
+        }
+      },
+      {
+        "id": "get-link-node",
+        "type": "integration.dropbox.files.get_temporary_link",
+        "data": {
+          "label": "Get Temporary Link",
+          "integrationKind": "integration.dropbox.files.get_temporary_link",
+          "arguments": {
+            "path": "$item.path_display"
+          }
+        },
+        "position": {
+          "x": 1350,
+          "y": 100
+        }
+      },
+      {
+        "id": "slack-node",
+        "type": "integration.slack.chat.post_message",
+        "data": {
+          "label": "Post to Slack",
+          "integrationKind": "integration.slack.chat.post_message",
+          "arguments": {
+            "channel": "YOUR_SLACK_CHANNEL_ID",
+            "text": "📢 *New Campaign Asset for Review* 📢\n📂 File: *$item.name*\n🔗 Preview Link: $Get_Temporary_Link.body.link"
+          }
+        },
+        "position": {
+          "x": 1600,
+          "y": 100
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge-1",
+        "source": "scheduled-trigger-node",
+        "target": "list-folder-node",
+        "type": "default"
+      },
+      {
+        "id": "edge-2",
+        "source": "list-folder-node",
+        "target": "split-node",
+        "type": "default"
+      },
+      {
+        "id": "edge-3",
+        "source": "split-node",
+        "target": "agent-node",
+        "type": "default"
+      },
+      {
+        "id": "edge-4",
+        "source": "agent-node",
+        "target": "if-node",
+        "type": "default"
+      },
+      {
+        "id": "edge-5",
+        "source": "if-node",
+        "target": "get-link-node",
+        "type": "default",
+        "label": "true",
+        "sourceHandle": "true",
+        "labelStyle": {
+          "fill": "white",
+          "fontWeight": 600
+        },
+        "labelShowBg": true,
+        "labelBgStyle": {
+          "fill": "hsl(142 70% 45%)"
+        },
+        "labelBgPadding": [
+          2,
+          6
+        ],
+        "labelBgBorderRadius": 4
+      },
+      {
+        "id": "edge-6",
+        "source": "get-link-node",
+        "target": "slack-node",
+        "type": "default"
+      }
+    ]
+  }
+}

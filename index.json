@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-02T19:51:35Z",
-  "template_count": 11,
+  "generated_at": "2026-06-04T17:23:26Z",
+  "template_count": 15,
   "templates": [
     {
       "external_id": "cross-channel-digest-builder",
@@ -50,6 +50,70 @@
       ],
       "author": null,
       "path": "templates/scheduling/daily-weather-briefing.json"
+    },
+    {
+      "external_id": "dropbox-ai-document-processor",
+      "name": "Dropbox AI Document Processor",
+      "description": "Automatically process new files in Dropbox using the AI Agent to extract structured details and append them to Google Sheets.",
+      "category": "cloud",
+      "icon": "cloud",
+      "tags": [
+        "dropbox",
+        "ai",
+        "agent",
+        "google-sheets",
+        "automation"
+      ],
+      "author": null,
+      "path": "templates/cloud/dropbox-ai-document-processor.json"
+    },
+    {
+      "external_id": "dropbox-cleanup-bot",
+      "name": "Dropbox Temp File Cleanup Bot",
+      "description": "Automatically scan a Dropbox folder, retrieve detailed file metadata (size, last modified time, name), use AI to decide if the file is temporary/expired, and automatically delete it.",
+      "category": "cloud",
+      "icon": "cloud",
+      "tags": [
+        "dropbox",
+        "metadata",
+        "cleanup",
+        "ai",
+        "automation"
+      ],
+      "author": null,
+      "path": "templates/cloud/dropbox-cleanup-bot.json"
+    },
+    {
+      "external_id": "dropbox-slack-alerter",
+      "name": "Dropbox Slack Alerter",
+      "description": "Send alerts and direct download links to Slack channels automatically when new design mockups or files are added to Dropbox.",
+      "category": "cloud",
+      "icon": "cloud",
+      "tags": [
+        "dropbox",
+        "slack",
+        "alerts",
+        "automation"
+      ],
+      "author": null,
+      "path": "templates/cloud/dropbox-slack-alerter.json"
+    },
+    {
+      "external_id": "dropbox-slack-campaign-review",
+      "name": "Dropbox to Slack Campaign Review",
+      "description": "Daily scheduled workflow to list a folder, filter for newly added image assets using AI, generate temporary download links, and post them to a Slack channel for review.",
+      "category": "cloud",
+      "icon": "cloud",
+      "tags": [
+        "dropbox",
+        "slack",
+        "split",
+        "scheduled",
+        "ai",
+        "marketing"
+      ],
+      "author": null,
+      "path": "templates/cloud/dropbox-slack-campaign-review.json"
     },
     {
       "external_id": "fortune-cookie",

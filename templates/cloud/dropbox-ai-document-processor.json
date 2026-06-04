@@ -1,0 +1,136 @@
+{
+  "external_id": "dropbox-ai-document-processor",
+  "name": "Dropbox AI Document Processor",
+  "description": "Automatically process new files in Dropbox using the AI Agent to extract structured details and append them to Google Sheets.",
+  "category": "cloud",
+  "icon": "cloud",
+  "tags": [
+    "dropbox",
+    "ai",
+    "agent",
+    "google-sheets",
+    "automation"
+  ],
+  "author": null,
+  "official": true,
+  "workflow_data": {
+    "nodes": [
+      {
+        "id": "b84f3c0c-7b86-4f4f-8012-70b925b42ab8",
+        "type": "webhookTrigger",
+        "data": {
+          "label": "Dropbox Webhook Trigger"
+        },
+        "position": {
+          "x": 100,
+          "y": 200
+        }
+      },
+      {
+        "id": "a21b3c94-82f5-4674-8b01-5126faee960d",
+        "type": "integration.dropbox.files.search",
+        "data": {
+          "label": "Search File",
+          "integrationKind": "integration.dropbox.files.search",
+          "arguments": {
+            "query": "$webhookTrigger.body.delta.entries[0].name",
+            "path": "/Invoices",
+            "filename_only": true
+          }
+        },
+        "position": {
+          "x": 350,
+          "y": 200
+        }
+      },
+      {
+        "id": "d94a1b02-5c02-4f32-841c-9214fb011e03",
+        "type": "integration.dropbox.files.get_temporary_link",
+        "data": {
+          "label": "Get Temporary Link",
+          "integrationKind": "integration.dropbox.files.get_temporary_link",
+          "arguments": {
+            "path": "$Search_File.body.matches[0].metadata.metadata.path_display"
+          }
+        },
+        "position": {
+          "x": 600,
+          "y": 200
+        }
+      },
+      {
+        "id": "e02b85cf-512c-4b62-9a02-b2d9fa9b15d2",
+        "type": "agent",
+        "data": {
+          "label": "AI Invoice Parser",
+          "system_prompt": "You are a specialized invoice processing assistant. Extract the Vendor Name, Invoice Date (YYYY-MM-DD), and Total Amount from the file link provided.",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Please analyze this document link: $Get_Temporary_Link.body.link"
+            }
+          ],
+          "model": {
+            "provider": "gemini",
+            "name": "gemini-2.0-flash",
+            "backend": "ai_studio",
+            "temperature": 0.2
+          }
+        },
+        "position": {
+          "x": 850,
+          "y": 200
+        }
+      },
+      {
+        "id": "c04e28bf-4c7b-402a-bf60-15d2fb321a0a",
+        "type": "integration.google.sheets.append_row",
+        "data": {
+          "label": "Log to Google Sheets",
+          "integrationKind": "integration.google.sheets.append_row",
+          "arguments": {
+            "spreadsheet_id": "YOUR_SPREADSHEET_ID",
+            "sheet_name": "Invoices",
+            "value_input_option": "USER_ENTERED",
+            "values": [
+              [
+                "$AI_Invoice_Parser.final_response",
+                "$Get_Temporary_Link.body.link"
+              ]
+            ]
+          }
+        },
+        "position": {
+          "x": 1100,
+          "y": 200
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge-1",
+        "source": "b84f3c0c-7b86-4f4f-8012-70b925b42ab8",
+        "target": "a21b3c94-82f5-4674-8b01-5126faee960d",
+        "type": "default"
+      },
+      {
+        "id": "edge-2",
+        "source": "a21b3c94-82f5-4674-8b01-5126faee960d",
+        "target": "d94a1b02-5c02-4f32-841c-9214fb011e03",
+        "type": "default"
+      },
+      {
+        "id": "edge-3",
+        "source": "d94a1b02-5c02-4f32-841c-9214fb011e03",
+        "target": "e02b85cf-512c-4b62-9a02-b2d9fa9b15d2",
+        "type": "default"
+      },
+      {
+        "id": "edge-4",
+        "source": "e02b85cf-512c-4b62-9a02-b2d9fa9b15d2",
+        "target": "c04e28bf-4c7b-402a-bf60-15d2fb321a0a",
+        "type": "default"
+      }
+    ]
+  }
+}
